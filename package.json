@@ -1,0 +1,11 @@
+{
+  "name": "radio-metadata",
+  "version": "1.0.0",
+  "description": "Scalable util to read metadata from radio stations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
