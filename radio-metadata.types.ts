@@ -18,3 +18,17 @@ export interface RadioMetadata {
     listenUrl?: string;
   };
 }
+
+export type RadioSchema = {
+  name?: string;
+  urls?: { name?: string; url?: string }[];
+  paths?: {
+    tracks?: string;
+    song?: {
+      artist?: string;
+      title?: string;
+      imageUrl?: string;
+      listenUrl?: string;
+    };
+  };
+};
