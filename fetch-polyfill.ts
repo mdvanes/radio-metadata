@@ -1,0 +1,22 @@
+import fetch, {
+  Blob,
+  blobFrom,
+  blobFromSync,
+  File,
+  fileFrom,
+  fileFromSync,
+  FormData,
+  Headers,
+  Request,
+  Response,
+} from "node-fetch";
+
+if (!globalThis.fetch) {
+  // @ts-expect-error
+  globalThis.fetch = fetch;
+  globalThis.Headers = Headers;
+  // @ts-expect-error
+  globalThis.Request = Request;
+  // @ts-expect-error
+  globalThis.Response = Response;
+}
