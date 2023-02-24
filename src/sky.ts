@@ -1,4 +1,4 @@
-import { ISOTimeString, RadioMetadata } from "../radio-metadata.types.js";
+import { ISOTimeString, RadioMetadata } from "./radio-metadata.types.js";
 
 export const sky = {
   name: "Sky Radio",

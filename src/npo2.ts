@@ -1,4 +1,4 @@
-import { RadioMetadata } from "../radio-metadata.types.js";
+import { RadioMetadata } from "./radio-metadata.types.js";
 
 export const npo2 = {
   name: "NPO Radio 2",

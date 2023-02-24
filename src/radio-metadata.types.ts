@@ -21,7 +21,7 @@ export interface RadioMetadata {
 
 export type RadioSchema = {
   name?: string;
-  urls?: { name?: string; url?: string }[];
+  urls?: { name?: string; url?: string; headers?: any }[];
   paths?: {
     tracks?: string;
     song?: {

@@ -1,5 +1,5 @@
-import { jq } from "../jq/jq.js";
-import { RadioMetadata, RadioSchema } from "../radio-metadata.types.js";
+import { jq } from "./jq/jq.js";
+import { RadioMetadata, RadioSchema } from "./radio-metadata.types.js";
 import { Npo2TracksResponseItem } from "./npo2.js";
 
 export const npo2: RadioSchema = {
@@ -21,6 +21,8 @@ export const npo2: RadioSchema = {
       // TODO use jq.node - https://github.com/FGRibreau/jq.node - uses joi schemas!
       artist: 'property("artist")',
       title: 'property("title")',
+      imageUrl: 'property("image_url_400x400")',
+      listenUrl: 'property("spotify_url")',
     },
   },
 };
@@ -85,11 +87,10 @@ export const getRadioMetaData = async (): Promise<RadioMetadata[]> => {
           // end: await jq<string>(itemJson, song.title),
         },
         song: {
-          artist: song?.artist && (await jq<string>(itemJson, song.artist)),
-          title: song?.title && (await jq<string>(itemJson, song.title)),
-          imageUrl:
-            song?.imageUrl && (await jq<string>(itemJson, song.imageUrl)),
-          listenUrl: song?.title && (await jq<string>(itemJson, song.title)),
+          artist: await pick(song?.artist),
+          title: await pick(song?.title),
+          imageUrl: await pick(song?.imageUrl),
+          listenUrl: await pick(song?.listenUrl),
         },
       };
     })

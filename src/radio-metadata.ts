@@ -1,6 +1,6 @@
-import { getRadioMetaData as getRadioMetaDataNpo2 } from "./presets/npo2.js";
-import { getRadioMetaData as getRadioMetaDataNpo2Lite } from "./presets/npo2lite.js";
-import { getRadioMetaData as getRadioMetaDataSky } from "./presets/sky.js";
+import { getRadioMetaData as getRadioMetaDataNpo2 } from "./npo2.js";
+import { getRadioMetaData as getRadioMetaDataNpo2Lite } from "./npo2lite.js";
+import { getRadioMetaData as getRadioMetaDataSky } from "./sky.js";
 import { RadioMetadata } from "./radio-metadata.types.js";
 
 const configMap: Record<string, () => Promise<RadioMetadata[]>> = {
