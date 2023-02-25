@@ -23,6 +23,8 @@ export const npo2: RadioSchemaOptional = {
     broadcast: {
       // TODO Only use the most recent item for now. Since the broadcast and track data are two separate calls, it would require matching timestamps to match songs to broadcast slots
       title: 'property("broadcasts_.data[0].title")',
+      presenters: 'property("broadcasts_.data[0].presenters")',
+      imageUrl: 'property("broadcasts_.data[0].image_url_400x400")',
     },
     time: {
       start: 'property("startdatetime")',
@@ -89,6 +91,8 @@ export const getRadioMetaData = async (): Promise<RadioMetadata[]> => {
         },
         broadcast: {
           title: pickB && (await pickB(schema.paths.broadcast?.title)),
+          presenters: pickB && (await pickB(schema.paths.broadcast?.presenters)),
+          imageUrl: pickB && (await pickB(schema.paths.broadcast?.imageUrl)),
         },
         song: {
           artist: await pick(song?.artist),
