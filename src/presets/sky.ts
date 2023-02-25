@@ -39,6 +39,7 @@ export const sky: RadioSchemaOptional = {
     tracks: 'property("tracks_.data.station.playouts")',
     time: {
       start: 'property("broadcastDate")',
+      end: 'property("broadcastDate")',
     },
     song: {
       artist: 'property("track.artistName")',
