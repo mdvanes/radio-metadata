@@ -11,6 +11,12 @@ const configMap: Record<string, RadioSchemaOptional> = {
 export const getRadioMetaData = async (
   config: string | object
 ): Promise<RadioMetadata[]> => {
+  // In Webpack 5 process.exit is not availabe, but jq.node depends on it (in core.js)
+  if (!("exit" in process)) {
+    // @ts-expect-error
+    process.exit = (code: number) => {};
+  }
+
   if (typeof fetch === "undefined") {
     throw new Error("Fetch API must be polyfilled when using in Node");
   }
