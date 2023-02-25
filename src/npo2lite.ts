@@ -1,24 +1,34 @@
 import { jq } from "./jq/jq.js";
-import { RadioMetadata, RadioSchema } from "./radio-metadata.types.js";
-import { Npo2TracksResponseItem } from "./npo2.js";
+import {
+  RadioMetadata,
+  RadioSchema,
+  RadioSchemaOptional,
+} from "./radio-metadata.types.js";
+// import { urlToPickedTracks } from "./fp.js";
 
-export const npo2: RadioSchema = {
+export const npo2: RadioSchemaOptional = {
   name: "NPO Radio 2",
   urls: [
     {
-      name: "tracks",
+      name: "tracks_",
       url: "https://www.nporadio2.nl/api/tracks",
-      // schema: {},
     },
-    // {
-    //   url: "https://www.nporadio2.nl/api/broadcasts",
-    //   schema: {}
-    // }
+    {
+      name: "broadcasts_",
+      url: "https://www.nporadio2.nl/api/broadcasts",
+    },
   ],
   paths: {
-    tracks: 'property("data")',
+    tracks: 'property("tracks_.data")',
+    broadcast: {
+      // TODO Only use the most recent item for now. Since the broadcast and track data are two separate calls, it would require matching timestamps to match songs to broadcast slots
+      title: 'property("broadcasts_.data[0].title")',
+    },
+    time: {
+      start: 'property("startdatetime")',
+      end: 'property("enddatetime")',
+    },
     song: {
-      // TODO use jq.node - https://github.com/FGRibreau/jq.node - uses joi schemas!
       artist: 'property("artist")',
       title: 'property("title")',
       imageUrl: 'property("image_url_400x400")',
@@ -27,64 +37,58 @@ export const npo2: RadioSchema = {
   },
 };
 
-const isValidSchema = (schema: RadioSchema) =>
-  schema.urls &&
-  schema.urls.length > 0 &&
-  schema.urls[0].name &&
-  schema.paths?.tracks;
+const isValidSchema = (schema: RadioSchemaOptional): schema is RadioSchema =>
+  Boolean(
+    schema.name &&
+      schema.urls &&
+      schema.urls.length > 0 &&
+      schema.urls[0]?.url &&
+      schema.urls[0]?.name &&
+      schema.paths?.tracks &&
+      schema.paths?.song?.title
+  );
 
-// imageUrl:
-// song?.imageUrl && (await jq<string>(itemJson, song.imageUrl)),
 const pickFrom = (json: string) => async (path?: string) =>
   path && (await jq<string>(json, path));
 
 export const getRadioMetaData = async (): Promise<RadioMetadata[]> => {
-  console.log("jq", jq);
   const schema = npo2;
 
-  // TODO use isValidSchema with type guard to validate
-  if (
-    !(
-      schema.urls &&
-      schema.urls.length > 0 &&
-      schema.urls[0].url &&
-      schema.paths?.tracks
-    )
-  ) {
+  if (!isValidSchema(schema)) {
     return [];
   }
 
-  const response: { data: Npo2TracksResponseItem[] } = await fetch(
-    schema.urls[0].url
-  ).then((data) => data.json());
-
-  const tracks: any[] = JSON.parse(
-    await jq<string>(
-      // `[{"type": "aasfas"}]`,
-      // 'map("type")'
-      JSON.stringify(response),
-      schema.paths.tracks
-      // 'thru(a => moment.utc(a, "YYYYMMDD"))',
-      // { rawInput: true, require: "moment" },
-      // // @ts-expect-error
-      // function (err, result) {
-      //   console.log(result); // "2011-10-31T00:00:00.000Z"
-      // }
-      // {},
-      // (err: any, result: any) => console.log(result)
+  const responses = Object.fromEntries(
+    await Promise.all(
+      schema.urls.map(async (url) => [
+        url.name,
+        await fetch(url.url).then((data) => data.json()),
+      ])
     )
   );
+
+  const tracks: any[] = JSON.parse(
+    await jq<string>(JSON.stringify(responses), schema.paths.tracks)
+  );
+
+  const broadcastJson =
+    schema.paths.broadcast?.title && JSON.stringify(responses);
 
   const result = await Promise.all(
     tracks.map(async (item): Promise<RadioMetadata> => {
       const itemJson = JSON.stringify(item);
-      const song = schema?.paths?.song;
+      const time = schema.paths.time;
+      const song = schema.paths.song;
       const pick = pickFrom(itemJson);
+      const pickB = broadcastJson && pickFrom(broadcastJson);
+
       return {
         time: {
-          start: await pick(song?.title),
-          // start: song?.title && (await jq<string>(itemJson, song.title)),
-          // end: await jq<string>(itemJson, song.title),
+          start: await pick(time?.start),
+          end: await pick(time?.end),
+        },
+        broadcast: {
+          title: pickB && (await pickB(schema.paths.broadcast?.title)),
         },
         song: {
           artist: await pick(song?.artist),
@@ -96,27 +100,5 @@ export const getRadioMetaData = async (): Promise<RadioMetadata[]> => {
     })
   );
 
-  // const result1 = await jq<string>(
-  //   // `[{"type": "aasfas"}]`,
-  //   // 'map("type")'
-  //   result,
-  //   'map("title")'
-  // );
-  // console.log(result1);
-
-  // Deep example
-  // const result2 = await jq<string>(
-  //   `[{"type": {"other": "aasfas"}}]`,
-  //   'map("type.other")'
-  // );
-  // console.log("deep:", result2);
-
   return result;
-  // return response.data.map(
-  //   (item, index): RadioMetadata => ({
-  //     song: {
-  //       title: item.title,
-  //     },
-  //   })
-  // );
 };
