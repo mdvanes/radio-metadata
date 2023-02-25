@@ -1,4 +1,4 @@
-import { RadioSchemaOptional } from "../src/radio-metadata.types.js";
+import { RadioSchemaOptional } from "../radio-metadata.types.js";
 
 export const sky: RadioSchemaOptional = {
   name: "Sky Radio",

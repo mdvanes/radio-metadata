@@ -1,5 +1,5 @@
-import { npo2 } from "../presets/npo2.js";
-import { sky } from "../presets/sky.js";
+import { npo2 } from "./presets/npo2.js";
+import { sky } from "./presets/sky.js";
 import { getRadioMetaDataBySchema } from "./getRadioMetaDataBySchema.js";
 import { RadioMetadata, RadioSchemaOptional } from "./radio-metadata.types.js";
 
