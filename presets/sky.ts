@@ -42,8 +42,8 @@ export const sky: RadioSchemaOptional = {
     },
     song: {
       artist: 'property("track.artistName")',
-      title: 'property("title")',
-      imageUrl: 'property("image_url_400x400")',
+      title: 'property("track.title")',
+      imageUrl: 'property("track.images[0].uri")',
     },
   },
 };
