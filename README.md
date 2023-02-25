@@ -1,6 +1,6 @@
 # radio-metadata
 
-Scalable util to read metadata from radio stations
+Scalable library to read metadata from radio stations
 
 ## Use
 

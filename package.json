@@ -1,14 +1,15 @@
 {
   "name": "@mdworld/radio-metadata",
   "version": "1.0.0",
-  "description": "Scalable util to read metadata from radio stations",
-  "exports": "./index.js",
+  "description": "Scalable library to read metadata from radio stations",
+  "exports": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "engines": {
     "node": ">=14.16"
   },
   "scripts": {
-    "start": "ts-node --esm index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node --esm demo.ts",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",

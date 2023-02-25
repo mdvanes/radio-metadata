@@ -1,10 +1,14 @@
 // e.g. 2023-02-24T14:13:37.589Z
 export type ISOTimeString = string; // TODO apply brand
 
+// E.g. "2023-02-25T14:00:00"
+// TODO type Npo2TimeString = string;
+
 export interface RadioMetadata {
   time?: {
     start?: ISOTimeString;
     end?: ISOTimeString;
+    // TODO fallback image url?
   };
   broadcast?: {
     title?: string;
