@@ -1,16 +1,15 @@
-import { getRadioMetaData as getRadioMetaDataNpo2 } from "./npo2.js";
-import { getRadioMetaData as getRadioMetaDataNpo2Lite } from "./npo2lite.js";
-import { getRadioMetaData as getRadioMetaDataSky } from "./sky.js";
-import { RadioMetadata } from "./radio-metadata.types.js";
+import { npo2 } from "../presets/npo2.js";
+import { sky } from "../presets/sky.js";
+import { getRadioMetaDataBySchema } from "./getRadioMetaDataBySchema.js";
+import { RadioMetadata, RadioSchemaOptional } from "./radio-metadata.types.js";
 
-const configMap: Record<string, () => Promise<RadioMetadata[]>> = {
-  npo2: getRadioMetaDataNpo2,
-  npo2lite: getRadioMetaDataNpo2Lite,
-  sky: getRadioMetaDataSky,
+const configMap: Record<string, RadioSchemaOptional> = {
+  npo2,
+  sky,
 };
 
 export const getRadioMetaData = async (
-  config: string
+  config: string | object
 ): Promise<RadioMetadata[]> => {
   if (typeof fetch === "undefined") {
     throw new Error("Fetch API must be polyfilled when using in Node");
@@ -18,11 +17,11 @@ export const getRadioMetaData = async (
 
   console.log("Get radio metadata with config:", config);
 
-  const retrieverFn = configMap[config];
+  const schema = typeof config === "string" ? configMap[config] : config;
 
-  if (!retrieverFn) {
-    throw new Error(`No retriever found for config ${config}`);
+  if (!schema) {
+    throw new Error(`No schema found for config ${config}`);
   }
 
-  return retrieverFn();
+  return getRadioMetaDataBySchema(schema);
 };
