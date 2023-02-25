@@ -3,6 +3,8 @@ import { sky } from "./presets/sky.js";
 import { getRadioMetaDataBySchema } from "./getRadioMetaDataBySchema.js";
 import { RadioMetadata, RadioSchemaOptional } from "./radio-metadata.types.js";
 
+export { RadioSchemaOptional } from "./radio-metadata.types.js";
+
 const configMap: Record<string, RadioSchemaOptional> = {
   npo2,
   sky,
