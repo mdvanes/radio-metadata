@@ -36,8 +36,14 @@ Install with `npm i @mdworld/radio-metadata`
 
 When using in Node, make sure to [polyfill the Fetch API with node-fetch](https://github.com/node-fetch/node-fetch#providing-global-access).
 
-```
-import x from '@mdworld/radio-metadata';
+```typescript
+import { getRadioMetaData } from "@mdworld/radio-metadata";
+import { npo2 } from "@mdworld/radio-metadata/lib/presets/npo2";
 
-// TODO
+// built your own schema with this as an example
+const schema = npo2;
+
+const run = async () => {
+  const tracks = await getRadioMetaData(schema);
+}
 ```
