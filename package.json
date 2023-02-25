@@ -1,6 +1,6 @@
 {
   "name": "@mdworld/radio-metadata",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Scalable library to read metadata from radio stations",
   "exports": "./lib/src/radio-metadata.js",
   "types": "./lib/radio-metadata.d.ts",
