@@ -9,7 +9,7 @@ const run = async () => {
       "Previously played:",
       result.map(
         (item) =>
-          `${item.time?.start}: ${item.song.artist} - ${item.song.title}`
+          `${item.time?.start}: ${item.song.artist} - ${item.song.title} - ${item.song.imageUrl}`
       )
     );
 

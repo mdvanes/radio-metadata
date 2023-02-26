@@ -1,27 +1,26 @@
-interface PickRecord {
-  [name: string]: string | PickRecord;
+import { PickPath } from "./radio-metadata.types.js";
+
+export interface PickRecord {
+  [name: string]: unknown;
 }
 
-type PickResult = PickRecord | string | undefined;
-
-const isFlat = (item: PickResult): item is string | undefined => {
-  return typeof item === "string" || typeof item === "undefined";
-};
+type PickResult = unknown;
 
 export const pickFrom =
-  (record: PickRecord) =>
-  (path?: string[]): string | undefined => {
+  (record: unknown) =>
+  (path?: PickPath): PickResult => {
     if (!path) {
       return;
     }
-    const result = path.reduce<PickResult>((acc: PickResult, next: string) => {
-      if (typeof acc === "string" || typeof acc === "undefined") {
+    const result = path.reduce<PickResult>(
+      (acc: PickResult, next: string | number) => {
+        if (acc && typeof acc === "object") {
+          return (acc as PickRecord)[next];
+        }
         return acc;
-      }
-      return acc[next];
-    }, record);
-    if (!isFlat(result)) {
-      return;
-    }
+      },
+      record
+    );
+
     return result;
   };

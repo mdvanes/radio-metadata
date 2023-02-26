@@ -23,8 +23,6 @@ export const getRadioMetaData = async (
     throw new Error("Fetch API must be polyfilled when using in Node");
   }
 
-  console.log("Get radio metadata with config:", config);
-
   const schema = typeof config === "string" ? configMap[config] : config;
 
   if (!schema) {

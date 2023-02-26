@@ -1,5 +1,6 @@
-import { jq } from "./jq/jq.js";
+import { pickFrom, PickRecord } from "./pickFrom.js";
 import {
+  PickPath,
   RadioMetadata,
   RadioSchema,
   RadioSchemaOptional,
@@ -16,9 +17,6 @@ const isValidSchema = (schema: RadioSchemaOptional): schema is RadioSchema =>
       schema.paths?.tracks &&
       schema.paths?.song?.title
   );
-
-const pickFrom = (json: string) => async (path?: string) =>
-  path && (await jq<string>(json, path));
 
 export const getRadioMetaDataBySchema = async (
   schema: RadioSchemaOptional
@@ -38,37 +36,32 @@ export const getRadioMetaDataBySchema = async (
     )
   );
 
-  const tracks: any[] = JSON.parse(
-    await jq<string>(JSON.stringify(responses), schema.paths.tracks)
-  );
-
-  const broadcastJson =
-    schema.paths.broadcast?.title && JSON.stringify(responses);
+  const tracks = pickFrom(responses)(schema.paths.tracks) as PickRecord[];
 
   const result = await Promise.all(
     tracks.map(async (item): Promise<RadioMetadata> => {
-      const itemJson = JSON.stringify(item);
       const time = schema.paths.time;
       const song = schema.paths.song;
-      const pick = pickFrom(itemJson);
-      const pickB = broadcastJson && pickFrom(broadcastJson);
+      const pickB = pickFrom(responses) as (
+        path?: PickPath
+      ) => string | undefined;
+      const pick = pickFrom(item) as (path?: PickPath) => string | undefined;
 
       return {
         time: {
-          start: await pick(time?.start),
-          end: await pick(time?.end),
+          start: pick(time?.start),
+          end: pick(time?.end),
         },
         broadcast: {
-          title: pickB && (await pickB(schema.paths.broadcast?.title)),
-          presenters:
-            pickB && (await pickB(schema.paths.broadcast?.presenters)),
-          imageUrl: pickB && (await pickB(schema.paths.broadcast?.imageUrl)),
+          title: pickB && pickB(schema.paths.broadcast?.title),
+          presenters: pickB && pickB(schema.paths.broadcast?.presenters),
+          imageUrl: pickB && pickB(schema.paths.broadcast?.imageUrl),
         },
         song: {
-          artist: await pick(song?.artist),
-          title: await pick(song?.title),
-          imageUrl: await pick(song?.imageUrl),
-          listenUrl: await pick(song?.listenUrl),
+          artist: pick(song.artist),
+          title: pick(song.title) as string,
+          imageUrl: pick(song?.imageUrl),
+          listenUrl: pick(song?.listenUrl),
         },
       };
     })

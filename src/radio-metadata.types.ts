@@ -8,7 +8,6 @@ export interface RadioMetadata {
   time?: {
     start?: ISOTimeString;
     end?: ISOTimeString;
-    // TODO fallback image url?
   };
   broadcast?: {
     title?: string;
@@ -23,25 +22,27 @@ export interface RadioMetadata {
   };
 }
 
+export type PickPath = Array<string | number>;
+
 export type RadioSchema = {
   name: string;
   urls: { name: string; url: string; headers?: any }[];
   paths: {
-    tracks: string;
+    tracks: PickPath;
     time?: {
-      start?: string;
-      end?: string;
+      start?: PickPath;
+      end?: PickPath;
     };
     broadcast?: {
-      title?: string;
-      presenters?: string;
-      imageUrl?: string;
+      title?: PickPath;
+      presenters?: PickPath;
+      imageUrl?: PickPath;
     };
     song: {
-      artist?: string;
-      title: string;
-      imageUrl?: string;
-      listenUrl?: string;
+      artist?: PickPath;
+      title: PickPath;
+      imageUrl?: PickPath;
+      listenUrl?: PickPath;
     };
   };
 };
