@@ -15,7 +15,7 @@ const run = async () => {
 
     console.log("Now playing:", result[0]);
   } else {
-    console.log("Usage: ..."); // TODO
+    console.log("Usage: npm run npo2");
   }
 };
 

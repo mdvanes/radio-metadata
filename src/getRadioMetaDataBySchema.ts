@@ -59,7 +59,7 @@ export const getRadioMetaDataBySchema = async (
         },
         song: {
           artist: pick(song.artist),
-          title: pick(song.title) as string,
+          title: pick(song.title) ?? "",
           imageUrl: pick(song?.imageUrl),
           listenUrl: pick(song?.listenUrl),
         },
