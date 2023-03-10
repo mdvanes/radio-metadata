@@ -1,9 +1,9 @@
-import { npo2 } from "./presets/npo2.js";
-import { sky } from "./presets/sky.js";
-import { getRadioMetaDataBySchema } from "./getRadioMetaDataBySchema.js";
-import { RadioMetadata, RadioSchemaOptional } from "./radio-metadata.types.js";
+import { npo2 } from "./presets/npo2";
+import { sky } from "./presets/sky";
+import { getRadioMetaDataBySchema } from "./getRadioMetaDataBySchema";
+import { RadioMetadata, RadioSchemaOptional } from "./radio-metadata.types";
 
-export { RadioSchemaOptional } from "./radio-metadata.types.js";
+export { RadioSchemaOptional } from "./radio-metadata.types";
 
 const configMap: Record<string, RadioSchemaOptional> = {
   npo2,

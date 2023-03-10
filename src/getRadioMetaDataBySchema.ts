@@ -1,10 +1,10 @@
-import { pickFrom, PickRecord } from "./pickFrom.js";
+import { pickFrom, PickRecord } from "./pickFrom";
 import {
   PickPath,
   RadioMetadata,
   RadioSchema,
   RadioSchemaOptional,
-} from "./radio-metadata.types.js";
+} from "./radio-metadata.types";
 // import { urlToPickedTracks } from "./fp.js";
 
 const isValidSchema = (schema: RadioSchemaOptional): schema is RadioSchema =>
