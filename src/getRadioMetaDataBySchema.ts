@@ -1,10 +1,10 @@
-import { pickFrom, PickRecord } from "./pickFrom";
+import { pickFrom, PickRecord } from "./pickFrom.js";
 import {
   PickPath,
   RadioMetadata,
   RadioSchema,
   RadioSchemaOptional,
-} from "./radio-metadata.types";
+} from "./radio-metadata.types.js";
 // import { urlToPickedTracks } from "./fp.js";
 
 const isValidSchema = (schema: RadioSchemaOptional): schema is RadioSchema =>
@@ -29,7 +29,8 @@ export const getRadioMetaDataBySchema = async (
     await Promise.all(
       schema.urls.map(async (url) => [
         url.name,
-        await fetch(url.url, { headers: url.headers }).then((data) =>
+        // @ts-expect-error fix the global type because of the polyfill
+        await fetch(url.url, { headers: url.headers }).then((data: any) =>
           data.json()
         ),
       ])

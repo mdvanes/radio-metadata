@@ -1,16 +1,20 @@
 {
   "name": "@mdworld/radio-metadata",
-  "version": "1.2.0",
-  "description": "Scalable library to read metadata from radio stations",
-  "exports": "./lib/radio-metadata.js",
-  "main": "./lib/radio-metadata.js",
-  "types": "./lib/radio-metadata.d.ts",
+  "version": "1.4.0",
+  "description": "Scalable library to read metadata from radio stations", 
+  "types": "./dist/esm/radio-metadata.d.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/radio-metadata.js",
+      "require": "./dist/cjs/radio-metadata.js"
+    }
+  },
   "engines": {
     "node": ">=14.16"
   },
   "scripts": {
     "start": "ts-node --esm demo.ts",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "rm -rf dist && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && ./rename.sh"
   },
   "author": "M.D. van Es",
   "license": "ISC",

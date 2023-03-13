@@ -1,9 +1,9 @@
-import { npo2 } from "./presets/npo2";
-import { sky } from "./presets/sky";
-import { getRadioMetaDataBySchema } from "./getRadioMetaDataBySchema";
-import { RadioMetadata, RadioSchemaOptional } from "./radio-metadata.types";
+import { npo2 } from "./presets/npo2.js";
+import { sky } from "./presets/sky.js";
+import { getRadioMetaDataBySchema } from "./getRadioMetaDataBySchema.js";
+import { RadioMetadata, RadioSchemaOptional } from "./radio-metadata.types.js";
 
-export { RadioSchemaOptional } from "./radio-metadata.types";
+export { RadioSchemaOptional } from "./radio-metadata.types.js";
 
 const configMap: Record<string, RadioSchemaOptional> = {
   npo2,
@@ -20,6 +20,7 @@ export const getRadioMetaData = async (
   //   process.exit = (code: number) => {};
   // }
 
+  // @ts-expect-error replace with "fetch" in global ?
   if (typeof fetch === "undefined") {
     throw new Error("Fetch API must be polyfilled when using in Node");
   }
