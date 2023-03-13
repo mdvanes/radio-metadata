@@ -1,5 +1,5 @@
 import { getRadioMetaData } from "./src/radio-metadata.js";
-// import "./fetch-polyfill";
+import "./fetch-polyfill.js";
 
 const run = async () => {
   if (process.argv && process.argv.length > 2) {
