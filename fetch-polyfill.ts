@@ -1,6 +1,5 @@
 import fetch, { Headers, Request, Response } from "node-fetch";
 
-// @ts-expect-error
 if (!globalThis.fetch) {
   // @ts-expect-error
   globalThis.fetch = fetch;

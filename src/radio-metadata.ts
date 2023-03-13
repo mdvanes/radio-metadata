@@ -20,7 +20,6 @@ export const getRadioMetaData = async (
   //   process.exit = (code: number) => {};
   // }
 
-  // @ts-expect-error replace with "fetch" in global ?
   if (typeof fetch === "undefined") {
     throw new Error("Fetch API must be polyfilled when using in Node");
   }
